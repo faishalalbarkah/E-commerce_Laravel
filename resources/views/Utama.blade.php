@@ -26,7 +26,9 @@
 
 <body>
 	<header id="header"><!--header-->
-		
+        <?php 
+        $id = Session::get('id_user');
+        ?>
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
@@ -39,9 +41,9 @@
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="/Checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="/Keranjang"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="/Login"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
 					</div>
@@ -63,9 +65,9 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
+								<li><a href="/" class="active">Home</a></li>
 								<li><a href="contact-us.html">Contact</a></li>
-								<li><a href="konfirmasi.html">Confirm</a></li>
+								<li><a href="/Confirm">Confirm</a></li>
 							</ul>
 						</div>
 					</div>
@@ -166,22 +168,23 @@
 									<div class="productinfo text-center">
 										<img src="/data_file/{{$brg->gambar}}" alt="" />
 										<h2>Rp {{$brg->harga}}</h2>
-										<p>{{$brg ->nama_produk}}</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <p>{{$brg ->nama_produk}}</p>
+                                        <?php if($id != null){ ?>
+                                        <button data-toggle="modal" data-target="#myModal"  data-id="{{ $brg->id }}" class="btn btn-default add-to-cart jumlah"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                        <?php }else{} ?>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
 											<h2>Rp {{$brg->harga}}</h2>
 											<p>{{$brg ->nama_produk}}</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<?php if($id != null){ ?>
+                                           <button data-toggle="modal" data-target="#myModal"  data-id="{{ $brg->id }}" class="btn btn-default add-to-cart jumlah"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                            <?php }else{} ?>
 										</div>
 									</div>
 								</div>
 								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
+									
 								</div>
 							</div>
 						</div>
@@ -203,7 +206,37 @@
 			</div>
 		</div>
 		
-	</footer><!--/Footer-->
+    </footer><!--/Footer-->
+    
+    <!-- Modal -->
+         <div class="modal fade" id="myModal" role="dialog">
+           <div class="modal-dialog">
+             <form action="/AddCart" method="post">
+             <!-- Modal content-->
+             <div class="modal-content">
+               <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title">Masukan Jumlah</h4>
+               </div>
+               <div class="modal-body">
+                 <input type="hidden" id="id_barang" class="id_barang" name="id_barang" value="3487">
+                 <div class="form-group">
+                   <label for="exampleInputEmail1">Jumlah Beli</label>
+                   <input type="text" class="form-control " id="jumlah" name="jumlah" placeholder="Jumlah Beli">
+                 </div>
+               </div>
+               <div class="modal-footer">
+                 <button type="submit" class="btn btn-default">Beli</button>
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               </div>
+             </div>
+           </form>
+           </div>
+         </div>
+
+        </div>
+    <!-- Modal -->
+
 	
 
   
@@ -213,5 +246,12 @@
 	<script src="/BahanStudy/js/price-range.js"></script>
     <script src="/BahanStudy/js/jquery.prettyPhoto.js"></script>
     <script src="/BahanStudy/js/main.js"></script>
+    <script type="text/javascript">
+        $(".jumlah").click(function() {
+        $(".id_barang").val($(this).attr('data-id'));
+        });
+    </script>
+
+
 </body>
 </html>
